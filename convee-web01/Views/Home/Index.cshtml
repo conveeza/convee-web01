@@ -1,5 +1,46 @@
-﻿@{
+﻿@model PagedList.IPagedList<convee_web01.Models.CLIENT>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
     ViewBag.Title = "Home Page";
 }
 
 <h1>Convee-web01: demo</h1>
+
+@using (Html.BeginForm())
+{
+    <p class="form-inline">
+        <input type="text" class="form-control" placeholder="Enter product name..." name="searchString" />
+        <input type="submit" class="btn btn-primary" value="FindClient" />
+    </p>
+}
+<br />
+
+<table class="table table-striped">
+    <thead class="table bg-dark text-light">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Physical address</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in Model)
+        {
+           
+            <tr>
+                <td>@client.NAME</td>
+                <td>@client.EMAIL</td>
+                <td>@client.PHONE_NUMBER</td>
+                <td>@client.ADDRESS</td>
+                <td>@Html.ActionLink("Clients Invoices", "Invoices", "Home", new {id=client.CLIENT_ID}, new { @class="btn btn-primary" })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

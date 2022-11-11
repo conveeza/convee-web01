@@ -5,16 +5,32 @@
 @{
     ViewBag.Title = "About";
 }
+<style>
+    @@media only screen and (max-width: 600px) {
+        .smallscreennotshow {
+            display: none
+        }
+    }
+</style>
+
 
 <h2>All @Model.Client[0].NAME's Invoices</h2>
 <p>These are all the orders Engen Lusikisiki has made with riverside holdings</p>
+@using (Html.BeginForm("searchInvoices", "Home"))
+{
+    <p class="form-inline">
+        <input type="text" class="form-control" placeholder="Enter client name..." name="invString" />
+        <input type="submit" class="btn btn-primary" value="Search Invoice" />
+    </p>
+}
+<br />
 
 <table class="table table-striped">
     <thead class="table bg-dark text-light">
         <tr>
             <th>Invoice NO.</th>
             <th>Date</th>
-            <th>Price Class</th>
+            <th class="smallscreennotshow">Price Class</th>
             <th>Total</th>
             <th>Details</th>
         </tr>
@@ -26,9 +42,9 @@
             <tr>
                 <td>@invoice.INVOICE_NUM</td>
                 <td>@invoice.INVOICE_DATE</td>
-                <td>@invoice.PRICES_USED</td>
+                <td class="smallscreennotshow">@invoice.PRICES_USED</td>
                 <td>@invoice.INVOICE_TOTAL</td>
-                <td>@Html.ActionLink("Details", "Details", "Home", new { id=invoice.INVOICE_NUM }, new { @class = "btn btn-primary" })</td>
+                <td>@Html.ActionLink("Details", "Details", "Home", new { id = invoice.INVOICE_NUM }, new { @class = "btn btn-primary" })</td>
             </tr>
         }
     </tbody>

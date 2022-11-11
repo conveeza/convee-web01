@@ -1,29 +1,29 @@
 ﻿@model PagedList.IPagedList<convee_web01.Models.CLIENT>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Clients";
 }
-
 <style>
-    @@media only screen and (max-width: 600px){
-        .smallscreennotshow{
+    @@media only screen and (max-width: 600px) {
+        .smallscreennotshow {
             display: none
-        }   
+        }
     }
 </style>
 
-<h1>Convee-web01: Riverside Holdings Clients</h1>
+<h1>Riverside Holdings Clients</h1>
 
-@*@using (Html.BeginForm())
+@using (Html.BeginForm())
 {
     <p class="form-inline">
         <input type="text" class="form-control" placeholder="Enter client name..." name="searchString" />
         <input type="submit" class="btn btn-primary" value="Find Client" />
     </p>
 }
-<br />*@
+<br />
 
 <table class="table table-striped">
     <thead class="table bg-dark text-light">
@@ -38,13 +38,17 @@
     <tbody>
         @foreach (var client in Model)
         {
-           
+
             <tr>
                 <td>@client.NAME</td>
                 <td class="smallscreennotshow">@client.EMAIL</td>
                 <td>@client.PHONE_NUMBER</td>
                 <td class="smallscreennotshow">@client.ADDRESS</td>
-                <td>@Html.ActionLink("Clients Invoices", "Invoices", "Home", new {id=client.CLIENT_ID}, new { @class="btn btn-primary" })</td>
+                <td>
+                    @Html.ActionLink("Details", "ClDetail", "Home", new { id = client.CLIENT_ID }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Edit", "Edit", "Home", new { id = client.CLIENT_ID }, new { @class = "btn btn-info" })
+                    @Html.ActionLink("Delete", "Delete", "Home", new { id = client.CLIENT_ID }, new { @class = "btn btn-danger" })
+                </td>
             </tr>
         }
     </tbody>

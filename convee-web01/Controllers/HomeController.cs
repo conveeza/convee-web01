@@ -14,7 +14,7 @@ namespace convee_web01.Controllers
         private Riverside_HoldingsEntities db = new Riverside_HoldingsEntities();
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            int pageSize = 10;
+            int pageSize = 6;
             int pageNumber = (page ?? 1);
 
             ViewBag.CurrentSort = sortOrder;
@@ -47,18 +47,54 @@ namespace convee_web01.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
+
+            //access products model
+            var invoicesVM = new ClientInvoicesVM();
+            invoicesVM.Client = db.CLIENTS.Where(c => c.CLIENT_ID.Contains(id)).ToList();
+            invoicesVM.Invoices = db.INVOICES.ToList().Where(i => i.INVOICE_NUM.Contains(id)).ToPagedList(pageNumber, pageSize);
+
+            return View(invoicesVM);
+        }
+
+        public ActionResult searchInvoices(string sortOrder, string currentFilter, string invString, int? page)
+        {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            ViewBag.CurrentSort = sortOrder;
+
+            //
+            if (invString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                invString = currentFilter;
+            }
+
             //access products model
             var invoicesVM = new ClientInvoicesVM();
             invoicesVM.Client = db.CLIENTS.ToList();
             invoicesVM.Invoices = db.INVOICES.ToList().ToPagedList(pageNumber, pageSize);
 
-            return View();
+            //return results according to search
+            if (!String.IsNullOrEmpty(invString))
+            {
+                invoicesVM.Invoices = db.INVOICES.ToList().Where(p => p.INVOICE_NUM.Contains(invString)).ToPagedList(pageNumber, pageSize);
+            }
+
+            ViewBag.CurrentFilter = invString;
+
+            return View("Invoices",invoicesVM);
         }
 
-        public ActionResult Contact()
+        public ActionResult Details(string id)
         {
-            ViewBag.Message = "Your contact page.";
+            return View(db.INVOICES.ToList().Where(i => i.INVOICE_NUM.Contains(id)));
+        }
 
+        public ActionResult Statements()
+        {
             return View();
         }
     }

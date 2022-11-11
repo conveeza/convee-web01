@@ -5,7 +5,34 @@
 @{
     ViewBag.Title = "About";
 }
-<h2>Invoices</h2>
-<h3>All (Client name) Invoices</h3>
 
-<p>Use this area to provide additional information.</p>
+<h2>All @Model.Client[0].NAME's Invoices</h2>
+<p>These are all the orders Engen Lusikisiki has made with riverside holdings</p>
+
+<table class="table table-striped">
+    <thead class="table bg-dark text-light">
+        <tr>
+            <th>Invoice NO.</th>
+            <th>Date</th>
+            <th>Price Class</th>
+            <th>Total</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var invoice in Model.Invoices)
+        {
+
+            <tr>
+                <td>@invoice.INVOICE_NUM</td>
+                <td>@invoice.INVOICE_DATE</td>
+                <td>@invoice.PRICES_USED</td>
+                <td>@invoice.INVOICE_TOTAL</td>
+                <td>@Html.ActionLink("Details", "Details", "Home", new { id=invoice.INVOICE_NUM }, new { @class = "btn btn-primary" })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+Page @(Model.Invoices.PageCount < Model.Invoices.PageNumber ? 0 : Model.Invoices.PageNumber) of @Model.Invoices.PageCount
+@Html.PagedListPager(Model.Invoices, page => Url.Action("Invoices", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

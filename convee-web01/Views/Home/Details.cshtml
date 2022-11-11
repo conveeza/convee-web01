@@ -1,0 +1,22 @@
+﻿@model List<convee_web01.Models.INVOICE>
+@{
+    ViewBag.Title = "Details";
+}
+
+<h1>Incoice: @Model[0].INVOICE_NUM</h1>
+
+<h4>Procurment Date: @Model[0].INVOICE_DATE</h4>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Item description</th>
+            <th>Quantity</th>
+            <th>Unit price</th>
+            <th>Line total</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
